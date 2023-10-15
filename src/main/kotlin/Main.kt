@@ -54,7 +54,7 @@ class Ejecutable {
         }while(masPizzas==0)
         var valorPedido=0.0
         unPedido.forEach{valorPedido+=it.costePizza()}
-        unPedido.forEach { println("$it \n") }
+        unPedido.forEach { println("${it.base} \n${it.ingrediente}") }
         println("El total del pedido es: $valorPedido")
         println("Si desea cancelar el pedido pulse n en caso contrario cualquier tecla")
         if(readln()!="n")listaPedidos.add(Pedido(unPedido))
