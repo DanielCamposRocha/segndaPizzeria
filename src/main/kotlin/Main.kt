@@ -1,13 +1,13 @@
-import java.util.ArrayList
+
 
 fun main() {
     Ejecutable()
 }
 
 class Ejecutable {
-    private var listaIngredientes : ArrayList<Ingredientes> = ArrayList<Ingredientes>()
-    private var listaBases : ArrayList<BasePizza> = ArrayList<BasePizza>()
-    private var listaPedidos : ArrayList<Pedido> = ArrayList<Pedido>()
+    private var listaIngredientes : MutableList<Ingredientes> =mutableListOf<Ingredientes>()
+    private var listaBases : MutableList<BasePizza> = mutableListOf<BasePizza>()
+    private var listaPedidos : MutableList<Pedido> = mutableListOf<Pedido>()
 
     init {
         generaBase()
@@ -23,12 +23,12 @@ class Ejecutable {
             println("1.- Nuevo Pedido")
             println("2.- Mostrar Pedido")
             println("3.- Listar pedidos")
-            println("4.- Mostrar un pedido en concreto")
+            println("4.- Mostrar un pedido en concreto")//hy que saber el numero de pedido
             println("5.- Total de pedidos")
             opcion= readln().toInt()
         when(opcion){
             1->creaPedido()
-            2-> println(listaPedidos.last())
+            2-> println(listaPedidos.last())//muestra el ultimo pedido realizado
             3-> for((index,elemento) in listaPedidos.withIndex()) println("Pedido #${index+1} \n $elemento \n")
             4-> {println("Indique el numero de pedido que desea consultar")
                 println(listaPedidos.get(readln().toInt()-1))}
@@ -36,17 +36,17 @@ class Ejecutable {
         }
         }while (opcion!=0)
     }
-
+    //suma el coste de todos los pedidos de la lista
     private fun totalPeddos() {
         for((index,elemento) in listaPedidos.withIndex()) println("Pedido #${index+1} \n $elemento \n")
         var total=0.0
         listaPedidos.forEach { total+=it.costePedido() }
         println("El total de pedidos del dia es: $total")
     }
-
+    //genera un objeto de tipo Pedido y lo añade a la lista de pedidos
     private fun creaPedido() {
         var masPizzas:Int
-        val unPedido=ArrayList<Pizzas>()
+        val unPedido = mutableListOf<Pizzas>()
         do{
             unPedido.add(creaPizza())
             println("Si desea mas pizzas pulse 0 \n En caso contrario cualquier otra tecla")
@@ -60,9 +60,9 @@ class Ejecutable {
         if(readln()!="n")listaPedidos.add(Pedido(unPedido))
     }
 
-
+//genera un objeto de tipo Pizzas y lo devuelve
     private fun creaPizza() :Pizzas{
-       val listaParaPizza=ArrayList<Ingredientes>()
+       val listaParaPizza= mutableListOf<Ingredientes>()
         println("Indique el numero de la base de pizza que desea")
         for((index,elemento) in listaBases.withIndex()) println("$index para la base $elemento")
         var baseP=0
@@ -72,7 +72,7 @@ class Ejecutable {
             if(baseP>listaBases.size || baseP<0) println("Un numero que coincida con el de la base por favor")  else c=false
         }
         val base=listaBases.get(baseP)
-        var deseaMas=""
+        var deseaMas : String
         do {
             for ((index, elemento) in listaIngredientes.withIndex()) println("$index para la base $elemento")
             var ingre = 0
@@ -124,7 +124,7 @@ class BasePizza (val nombreBase: String,  var precio :Double) {
     }
 }
 
-class Pizzas(val base: BasePizza, val ingrediente: ArrayList<Ingredientes>) {
+class Pizzas(val base: BasePizza, val ingrediente: MutableList<Ingredientes>) {
     fun costePizza() :Double{
         var valor = 0.0
         ingrediente.forEach { valor+=it.precio }
@@ -139,7 +139,7 @@ class Pizzas(val base: BasePizza, val ingrediente: ArrayList<Ingredientes>) {
     }
 }
 
-class Pedido (val pizza:ArrayList<Pizzas>){
+class Pedido (val pizza:MutableList<Pizzas>){
 
     fun costePedido():Double{
         var valorPedido=0.0
